@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package mywordoftheday.v1alpha1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "protoc-gen-validate/validate/validate.proto";
+
+option go_package = "github.com/mywordoftheday/api/mywordoftheday/v1alpha1;mywordoftheday";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "MyWordOfTheDay API";
+    version: "1.0-alpha1";
+  };
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service MyWordOfTheDayService{
+  // Heartbeat
+  //
+  // Provides information about the service health
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/heartbeat"
+    };
+  };
+
+  // AddWord
+  //
+  // Adds a new word
+  rpc AddWord(AddWordRequest) returns (AddWordResponse) {
+    option (google.api.http) = {
+      post: "/v1alpha1/word",
+      body: "word"
+    };
+  };
+
+  // ListWords
+  //
+  // Lists words
+  rpc ListWords(ListWordsRequest) returns (ListWordsResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/words",
+    };
+  };
+
+  // DeleteWord
+  //
+  // Deletes a Word
+  rpc DeleteWord(DeleteWordRequest) returns (DeleteWordResponse) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/word/{id=*}"
+    };
+  };
+}
+
+message HeartbeatRequest {};
+
+message HeartbeatResponse {};
+
+message AddWordRequest {
+  // The word to add
+  Word word = 1;
+};
+
+message AddWordResponse {
+  // The added word
+  Word word = 1;
+}
+
+message ListWordsRequest {}
+
+message ListWordsResponse {
+  // The list of words
+  repeated Word words = 1;
+}
+
+message DeleteWordRequest {
+  // The unique identifier of the change.
+  int32 id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "Word"
+  ];
+}
+
+message DeleteWordResponse {
+  // The deleted word
+  Word word = 1;
+}
+
+message Word {
+  // The unique identifier of the word.
+  int32 id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  // The word to store
+  string word = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // A custom definition for the word
+  string custom_definition = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
