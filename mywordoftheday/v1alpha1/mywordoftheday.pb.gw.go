@@ -153,6 +153,24 @@ func local_request_MyWordOfTheDayService_DeleteWord_0(ctx context.Context, marsh
 
 }
 
+func request_MyWordOfTheDayService_RandomWord_0(ctx context.Context, marshaler runtime.Marshaler, client MyWordOfTheDayServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RandomWordRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.RandomWord(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MyWordOfTheDayService_RandomWord_0(ctx context.Context, marshaler runtime.Marshaler, server MyWordOfTheDayServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RandomWordRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.RandomWord(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterMyWordOfTheDayServiceHandlerServer registers the http handlers for service MyWordOfTheDayService to "mux".
 // UnaryRPC     :call MyWordOfTheDayServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -248,6 +266,29 @@ func RegisterMyWordOfTheDayServiceHandlerServer(ctx context.Context, mux *runtim
 		}
 
 		forward_MyWordOfTheDayService_DeleteWord_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_MyWordOfTheDayService_RandomWord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/mywordoftheday.v1alpha1.MyWordOfTheDayService/RandomWord")
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MyWordOfTheDayService_RandomWord_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MyWordOfTheDayService_RandomWord_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -372,6 +413,26 @@ func RegisterMyWordOfTheDayServiceHandlerClient(ctx context.Context, mux *runtim
 
 	})
 
+	mux.Handle("GET", pattern_MyWordOfTheDayService_RandomWord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/mywordoftheday.v1alpha1.MyWordOfTheDayService/RandomWord")
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MyWordOfTheDayService_RandomWord_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MyWordOfTheDayService_RandomWord_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -383,6 +444,8 @@ var (
 	pattern_MyWordOfTheDayService_ListWords_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1alpha1", "words"}, ""))
 
 	pattern_MyWordOfTheDayService_DeleteWord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1alpha1", "word", "id"}, ""))
+
+	pattern_MyWordOfTheDayService_RandomWord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1alpha1", "words", "random"}, ""))
 )
 
 var (
@@ -393,4 +456,6 @@ var (
 	forward_MyWordOfTheDayService_ListWords_0 = runtime.ForwardResponseMessage
 
 	forward_MyWordOfTheDayService_DeleteWord_0 = runtime.ForwardResponseMessage
+
+	forward_MyWordOfTheDayService_RandomWord_0 = runtime.ForwardResponseMessage
 )

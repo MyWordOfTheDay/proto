@@ -56,6 +56,15 @@ service MyWordOfTheDayService{
       delete: "/v1alpha1/word/{id=*}"
     };
   };
+
+  // RandomWord
+  //
+  // Returns a word at random
+  rpc RandomWord(RandomWordRequest) returns (RandomWordResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/words/random"
+    };
+  };
 }
 
 message HeartbeatRequest {};
@@ -90,6 +99,12 @@ message DeleteWordRequest {
 message DeleteWordResponse {
   // The deleted word
   Word word = 1;
+}
+
+message RandomWordRequest {}
+
+message RandomWordResponse {
+  Word words = 1;
 }
 
 message Word {

@@ -33,6 +33,10 @@ type MyWordOfTheDayServiceClient interface {
 	//
 	// Deletes a Word
 	DeleteWord(ctx context.Context, in *DeleteWordRequest, opts ...grpc.CallOption) (*DeleteWordResponse, error)
+	// RandomWord
+	//
+	// Returns a word at random
+	RandomWord(ctx context.Context, in *RandomWordRequest, opts ...grpc.CallOption) (*RandomWordResponse, error)
 }
 
 type myWordOfTheDayServiceClient struct {
@@ -79,6 +83,15 @@ func (c *myWordOfTheDayServiceClient) DeleteWord(ctx context.Context, in *Delete
 	return out, nil
 }
 
+func (c *myWordOfTheDayServiceClient) RandomWord(ctx context.Context, in *RandomWordRequest, opts ...grpc.CallOption) (*RandomWordResponse, error) {
+	out := new(RandomWordResponse)
+	err := c.cc.Invoke(ctx, "/mywordoftheday.v1alpha1.MyWordOfTheDayService/RandomWord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MyWordOfTheDayServiceServer is the server API for MyWordOfTheDayService service.
 // All implementations should embed UnimplementedMyWordOfTheDayServiceServer
 // for forward compatibility
@@ -99,6 +112,10 @@ type MyWordOfTheDayServiceServer interface {
 	//
 	// Deletes a Word
 	DeleteWord(context.Context, *DeleteWordRequest) (*DeleteWordResponse, error)
+	// RandomWord
+	//
+	// Returns a word at random
+	RandomWord(context.Context, *RandomWordRequest) (*RandomWordResponse, error)
 }
 
 // UnimplementedMyWordOfTheDayServiceServer should be embedded to have forward compatible implementations.
@@ -116,6 +133,9 @@ func (UnimplementedMyWordOfTheDayServiceServer) ListWords(context.Context, *List
 }
 func (UnimplementedMyWordOfTheDayServiceServer) DeleteWord(context.Context, *DeleteWordRequest) (*DeleteWordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWord not implemented")
+}
+func (UnimplementedMyWordOfTheDayServiceServer) RandomWord(context.Context, *RandomWordRequest) (*RandomWordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RandomWord not implemented")
 }
 
 // UnsafeMyWordOfTheDayServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -201,6 +221,24 @@ func _MyWordOfTheDayService_DeleteWord_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MyWordOfTheDayService_RandomWord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RandomWordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MyWordOfTheDayServiceServer).RandomWord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mywordoftheday.v1alpha1.MyWordOfTheDayService/RandomWord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MyWordOfTheDayServiceServer).RandomWord(ctx, req.(*RandomWordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _MyWordOfTheDayService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mywordoftheday.v1alpha1.MyWordOfTheDayService",
 	HandlerType: (*MyWordOfTheDayServiceServer)(nil),
@@ -220,6 +258,10 @@ var _MyWordOfTheDayService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteWord",
 			Handler:    _MyWordOfTheDayService_DeleteWord_Handler,
+		},
+		{
+			MethodName: "RandomWord",
+			Handler:    _MyWordOfTheDayService_RandomWord_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
