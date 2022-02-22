@@ -683,10 +683,10 @@ func (m *RandomWordResponse) Validate() error {
 		return nil
 	}
 
-	if v, ok := interface{}(m.GetWords()).(interface{ Validate() error }); ok {
+	if v, ok := interface{}(m.GetWord()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return RandomWordResponseValidationError{
-				field:  "Words",
+				field:  "Word",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
