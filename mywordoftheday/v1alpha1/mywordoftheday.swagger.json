@@ -132,6 +132,30 @@
           "MyWordOfTheDayService"
         ]
       }
+    },
+    "/v1alpha1/words/random": {
+      "get": {
+        "summary": "RandomWord",
+        "description": "Returns a word at random",
+        "operationId": "RandomWord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1alpha1RandomWordResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "MyWordOfTheDayService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -195,6 +219,14 @@
             "$ref": "#/definitions/v1alpha1Word"
           },
           "title": "The list of words"
+        }
+      }
+    },
+    "v1alpha1RandomWordResponse": {
+      "type": "object",
+      "properties": {
+        "words": {
+          "$ref": "#/definitions/v1alpha1Word"
         }
       }
     },

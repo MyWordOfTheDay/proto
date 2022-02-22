@@ -608,6 +608,150 @@ var _ interface {
 	ErrorName() string
 } = DeleteWordResponseValidationError{}
 
+// Validate checks the field values on RandomWordRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *RandomWordRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// RandomWordRequestValidationError is the validation error returned by
+// RandomWordRequest.Validate if the designated constraints aren't met.
+type RandomWordRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RandomWordRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RandomWordRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RandomWordRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RandomWordRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RandomWordRequestValidationError) ErrorName() string {
+	return "RandomWordRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RandomWordRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRandomWordRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RandomWordRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RandomWordRequestValidationError{}
+
+// Validate checks the field values on RandomWordResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *RandomWordResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetWords()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RandomWordResponseValidationError{
+				field:  "Words",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// RandomWordResponseValidationError is the validation error returned by
+// RandomWordResponse.Validate if the designated constraints aren't met.
+type RandomWordResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RandomWordResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RandomWordResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RandomWordResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RandomWordResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RandomWordResponseValidationError) ErrorName() string {
+	return "RandomWordResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RandomWordResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRandomWordResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RandomWordResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RandomWordResponseValidationError{}
+
 // Validate checks the field values on Word with the rules defined in the proto
 // definition for this message. If any rules are violated, an error is returned.
 func (m *Word) Validate() error {
