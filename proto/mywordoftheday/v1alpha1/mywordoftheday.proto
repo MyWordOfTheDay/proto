@@ -62,7 +62,7 @@ service MyWordOfTheDayService{
   // Returns a word at random
   rpc RandomWord(RandomWordRequest) returns (RandomWordResponse) {
     option (google.api.http) = {
-      get: "/v1alpha1/words/random"
+      get: "/v1alpha1/word/random"
     };
   };
 }
@@ -104,7 +104,7 @@ message DeleteWordResponse {
 message RandomWordRequest {}
 
 message RandomWordResponse {
-  Word words = 1;
+  Word word = 1;
 }
 
 message Word {
